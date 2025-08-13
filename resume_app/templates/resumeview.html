@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume Card</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body { margin: 0; display: flex; transition: all 0.3s; }
+        .sidebar { 
+            width: 200px; 
+            padding: 20px; 
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1); 
+            height: 100vh; 
+            position: fixed; 
+            overflow-y: auto; 
+        }
+        .sidebar h3 { margin: 0 0 15px; font-size: 20px; }
+        .sidebar button { 
+            display: block; 
+            width: 100%; 
+            padding: 10px; 
+            margin: 5px 0; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+        }
+        .download-btn {
+            background: #4CAF50 !important;
+            color: white !important;
+            margin-top: 20px !important;
+        }
+        .download-btn:hover {
+            background: #45a049 !important;
+        }
+        .container { 
+            flex-grow: 1; 
+            display: flex; 
+            justify-content: center; 
+            padding: 20px; 
+            margin-left: 200px; 
+        }
+        .card { 
+            width: 700px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+            border-radius: 10px; 
+            overflow: hidden; 
+        }
+        .header, .section { padding: 15px; }
+        h1 { margin: 0; font-size: 26px; }
+        h2 { font-size: 18px; margin: 10px 0 5px; }
+        p { margin: 5px 0; }
+
+        /* Theme 1: Minimalist */
+        .theme-minimalist { 
+            font-family: Arial, sans-serif; 
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); 
+            color: #333; 
+        }
+        .theme-minimalist .sidebar { background: #e0e0e0; }
+        .theme-minimalist .sidebar button { background: #fff; color: #333; }
+        .theme-minimalist .sidebar button:hover { background: #d0d0d0; }
+        .theme-minimalist .card { background: #fff; }
+        .theme-minimalist .header { border-bottom: 2px solid #333; }
+        .theme-minimalist h2 { color: #666; }
+
+        /* Theme 2: Bold Modern */
+        .theme-bold-modern { 
+            font-family: 'Georgia', serif; 
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); 
+            color: #fff; 
+        }
+        .theme-bold-modern .sidebar { background: #333; }
+        .theme-bold-modern .sidebar button { background: #ff5733; color: #fff; }
+        .theme-bold-modern .sidebar button:hover { background: #e04e2d; }
+        .theme-bold-modern .card { background: #2c2c2c; }
+        .theme-bold-modern .header { background: #ff5733; }
+        .theme-bold-modern h2 { color: #ff5733; }
+
+        /* Theme 3: Elegant */
+        .theme-elegant { 
+            font-family: 'Times New Roman', serif; 
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); 
+            color: #2c3e50; 
+        }
+        .theme-elegant .sidebar { background: #dcdcdc; }
+        .theme-elegant .sidebar button { background: #3498db; color: #fff; }
+        .theme-elegant .sidebar button:hover { background: #2c87c3; }
+        .theme-elegant .card { background: #fff; border-left: 5px solid #3498db; }
+        .theme-elegant h2 { color: #3498db; }
+
+        /* Theme 4: Creative */
+        .theme-creative { 
+            font-family: 'Verdana', sans-serif; 
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); 
+            color: #4a2c00; 
+        }
+        .theme-creative .sidebar { background: #ffe4b5; }
+        .theme-creative .sidebar button { background: #ffcc00; color: #4a2c00; }
+        .theme-creative .sidebar button:hover { background: #e6b800; }
+        .theme-creative .card { background: #fff; }
+        .theme-creative .header { background: #ffcc00; }
+        .theme-creative h2 { color: #ff6600; }
+
+        /* Theme 5: Professional */
+        .theme-professional { 
+            font-family: 'Helvetica', sans-serif; 
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); 
+            color: #1f2a44; 
+        }
+        .theme-professional .sidebar { background: #d9e2ec; }
+        .theme-professional .sidebar button { background: #007bff; color: #fff; }
+        .theme-professional .sidebar button:hover { background: #0069d9; }
+        .theme-professional .card { background: #fff; }
+        .theme-professional .header { border-bottom: 3px solid #007bff; }
+        .theme-professional h2 { color: #007bff; }
+
+        @media print {
+            .sidebar {
+                display: none;
+            }
+            .container {
+                margin-left: 0;
+            }
+            .card {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body class="theme-minimalist">
+    <div class="sidebar">
+        <h3>Select Theme</h3>
+        <button onclick="changeTheme('minimalist')">Minimalist</button>
+        <button onclick="changeTheme('bold-modern')">Bold Modern</button>
+        <button onclick="changeTheme('elegant')">Elegant</button>
+        <button onclick="changeTheme('creative')">Creative</button>
+        <button onclick="changeTheme('professional')">Professional</button>
+        
+        <button onclick="downloadPDF()" class="download-btn">Download as PDF</button>
+    </div>
+    <div class="container">
+        <div class="card" id="resume-card">
+            <div class="header">
+                <h1>{{ resume.email }}</h1>
+                <p>{{ resume.phone }} | {{ resume.location }}</p>
+            </div>
+            <div class="section">
+                <h2>Objective</h2>
+                <p>{{ resume.objective }}</p>
+            </div>
+            <div class="section">
+                <h2>Experience</h2>
+                {% if resume.job_title_1 %}
+                    <p><strong>{{ resume.job_title_1 }}</strong> - {{ resume.company_1 }} ({{ resume.dates_1 }})</p>
+                    <p>{{ resume.responsibilities_1 }}</p>
+                {% endif %}
+                {% if resume.job_title_2 %}
+                    <p><strong>{{ resume.job_title_2 }}</strong> - {{ resume.company_2 }} ({{ resume.dates_2 }})</p>
+                    <p>{{ resume.responsibilities_2 }}</p>
+                {% endif %}
+            </div>
+            <div class="section">
+                <h2>Education</h2>
+                <p>{{ resume.degree }} - {{ resume.university }} ({{ resume.graduation_date }})</p>
+            </div>
+            <div class="section">
+                <h2>Skills</h2>
+                <p>{{ resume.skills }}</p>
+            </div>
+            <div class="section">
+                <h2>References</h2>
+                <p>{{ resume.references|default:"Available upon request" }}</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeTheme(theme) {
+            document.body.className = `theme-${theme}`;
+        }
+        
+        function downloadPDF() {
+            // Get the resume card element
+            const element = document.getElementById('resume-card');
+            
+            // Define options for the PDF
+            const options = {
+                margin: 10,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Generate and download the PDF
+            html2pdf().from(element).set(options).save();
+        }
+    </script>
+</body>
+</html>

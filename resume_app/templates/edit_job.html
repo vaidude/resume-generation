@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Job Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            margin-top: 60px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+        }
+        h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-group label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #555;
+        }
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid #d1d8e2;
+            box-shadow: none;
+            transition: border-color 0.3s ease-in-out;
+        }
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        .form-control::placeholder {
+            color: #999;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+            font-weight: 600;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-control, .btn {
+            transition: all 0.3s ease;
+        }
+        .btn {
+            cursor: pointer;
+        }
+        .text-muted {
+            font-size: 14px;
+            text-align: center;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Edit Job Listing</h1>
+    
+    <!-- Job Edit Form -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="companyName">Company Name</label>
+            <input type="text" class="form-control" id="companyName" name="companyName" value="{{ job.companyName }}" required placeholder="Enter Company Name">
+        </div>
+
+        <div class="form-group">
+            <label for="companyAddress">Company Address</label>
+            <input type="text" class="form-control" id="companyAddress" name="companyAddress" value="{{ job.companyAddress }}" required placeholder="Enter Company Address">
+        </div>
+
+        <div class="form-group">
+            <label for="jobTitle">Job Title</label>
+            <input type="text" class="form-control" id="jobTitle" name="jobTitle" value="{{ job.jobTitle }}" required placeholder="Enter Job Title">
+        </div>
+
+        <div class="form-group">
+            <label for="jobDescription">Job Description</label>
+            <textarea class="form-control" id="jobDescription" name="jobDescription" rows="4" required placeholder="Enter Job Description">{{ job.jobDescription }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="jobResponsibilities">Job Responsibilities</label>
+            <textarea class="form-control" id="jobResponsibilities" name="jobResponsibilities" rows="4" required placeholder="Enter Job Responsibilities">{{ job.jobResponsibilities }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="jobQualifications">Job Qualifications</label>
+            <textarea class="form-control" id="jobQualifications" name="jobQualifications" rows="4" required placeholder="Enter Job Qualifications">{{ job.jobQualifications }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="salaryRange">Salary Range</label>
+            <input type="text" class="form-control" id="salaryRange" name="salaryRange" value="{{ job.salaryRange }}" required placeholder="Enter Salary Range">
+        </div>
+
+        <div class="form-group">
+            <label for="contactEmail">Contact Email</label>
+            <input type="email" class="form-control" id="contactEmail" name="contactEmail" value="{{ job.contactEmail }}" required placeholder="Enter Contact Email">
+        </div>
+
+        <div class="form-group">
+            <label for="applicationDeadline">Application Deadline</label>
+            <input type="date" class="form-control" id="applicationDeadline" name="applicationDeadline" value="{{ job.applicationDeadline }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+    <p class="text-muted">Make sure all details are correct before submitting.</p>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

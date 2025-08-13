@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Resume</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Submit Your Resume</h2>
+        <form action="{% url 'resume' %}" method="POST">
+            {% csrf_token %}
+
+            <label>Email:</label>
+            <input type="email" name="email" required>
+
+            <label>Phone:</label>
+            <input type="text" name="phone" required>
+
+            <label>Location:</label>
+            <input type="text" name="location" required>
+
+            <label>Objective:</label>
+            <textarea name="objective" required></textarea>
+
+            <h3>Experience</h3>
+            <label>Job Title 1:</label>
+            <input type="text" name="job_title_1">
+            
+            <label>Company Name 1:</label>
+            <input type="text" name="company_1">
+
+            <label>Dates of Employment 1:</label>
+            <input type="date" name="dates_1">
+
+            <label>Responsibilities 1:</label>
+            <textarea name="responsibilities_1"></textarea>
+
+            <h3>Previous Experience (Optional)</h3>
+            <label>Job Title 2:</label>
+            <input type="text" name="job_title_2">
+            
+            <label>Company Name 2:</label>
+            <input type="text" name="company_2">
+
+            <label>Dates of Employment 2:</label>
+            <input type="date" name="dates_2">
+
+            <label>Responsibilities 2:</label>
+            <textarea name="responsibilities_2"></textarea>
+
+            <h3>Education</h3>
+            <label>Degree:</label>
+            <input type="text" name="degree" required>
+
+            <label>University:</label>
+            <input type="text" name="university" required>
+
+            <label>Graduation Date:</label>
+            <input type="date" name="graduation_date">
+
+            <h3>Skills</h3>
+            <textarea name="skills" required></textarea>
+
+            <h3>References (Optional)</h3>
+            <textarea name="references"></textarea>
+
+            <button type="submit">Submit Resume</button>
+        </form>
+        <div class="switch-form">
+            <a href="/resumelist/">References</a>
+        </div>
+    </div>
+  
+</body>
+</html>

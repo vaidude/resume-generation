@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/heroicons/2.0.18/outline.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+            <svg class="w-8 h-8 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Exam Results
+        </h1>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="min-w-full">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-gray-600">Exam</th>
+                        <th class="py-3 px-4 text-left text-gray-600">Email</th>
+                        <th class="py-3 px-4 text-left text-gray-600">Score</th>
+                        <th class="py-3 px-4 text-left text-gray-600">Total</th>
+                        <th class="py-3 px-4 text-left text-gray-600">Rating</th>
+                        <th class="py-3 px-4 text-left text-gray-600">Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-3 px-4">{{ result.exam }}</td>
+                        <td class="py-3 px-4">{{ result.user_email }}</td>
+                        <td class="py-3 px-4">{{ result.score }}</td>
+                        <td class="py-3 px-4">{{ result.total_questions }}</td>
+                        <td class="py-3 px-4">{{ result.rating }}</td>
+                        <td class="py-3 px-4">{{ result.completed_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

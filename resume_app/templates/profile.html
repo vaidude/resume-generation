@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e1e1e 50%, #121212 50%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #e0e0e0;
+        }
+        .profile-container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            width: 350px;
+        }
+        .pay-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .amount {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="profile-container">
+    <div class="amount">Amount: ₹200</div>
+    <button onclick="makePayment()" class="pay-button">Pay Now</button>
+</div>
+
+<script>
+function makePayment() {
+    fetch('/create-order/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            amount: 200
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        var options = {
+            key: "rzp_test_X5OfG2jiWrAzSj",
+            amount: data.amount,
+            currency: "INR",
+            name: "Payment",
+            description: "Test Payment",
+            order_id: data.order_id,
+            handler: function (response) {
+                fetch('/payment-success/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Payment successful!');
+                        window.location.href = '/login/';
+                    }
+                });
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    });
+}
+</script>
+</body>
+</html>

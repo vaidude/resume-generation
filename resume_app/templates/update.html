@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Floating Effect */
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Wave Background */
+        .wave-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(82, 81, 81, 0.3), rgba(80, 168, 255, 0.4), rgba(48, 50, 51, 0.5));
+            animation: wave 12s ease-in-out infinite;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        /* Transparent Box with Blur Effect */
+        .profile-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Button Hover and Focus Transition */
+        button {
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #3a486f;
+            transform: scale(1.05);
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.5);
+        }
+
+        /* Prevent overflow and scrolling */
+        body, html {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 10px;
+            background-color: #4CAF50; /* Green for success */
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        /* Define missing wave animation */
+        @keyframes wave {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+
+    <!-- Background Wave -->
+    <div class="wave-background"></div>
+    
+    <div class="flex items-center justify-center min-h-screen">
+        <!-- Profile Box with Transparent Background and Floating Animation -->
+        <div class="profile-box w-full max-w-md floating">
+            <h2 class="text-2xl font-bold text-center text-gray-200">Update Profile</h2>
+
+            <form method="POST" id="update-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mt-4 space-y-4">
+                    
+                    <div class="mb-6">
+                        <label for="image" class="block text-sm font-medium text-gray-400">Profile Image:</label>
+                        <input type="file" id="image" name="image" class="w-full mt-2 px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                        
+                        <div class="mt-4">
+                            <p class="text-gray-400 text-sm">Current Image:</p>
+                            {% if user.image %}
+                                <img src="{{ user.image.url }}" alt="Profile Image" class="w-32 h-32 rounded-full border-2 border-gray-300 object-cover mt-2">
+                            {% else %}
+                                <div class="w-32 h-32 rounded-full border-2 border-gray-600 flex items-center justify-center bg-gray-800 mt-2">
+                                    <span class="text-gray-400">No Image</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-400">Name</label>
+                        <input type="text" id="name" name="name" value="{{ user.name }}" required class="bg-gray-700 border border-gray-600 rounded-md p-2 w-full text-white">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-400">Password</label>
+                        <input type="password" id="password" name="password" value="{{ user.password }}" required class="bg-gray-700 border border-gray-600 rounded-md p-2 w-full text-white">
+                    </div>
+                    <div>
+                        <label for="phonenumber" class="block text-sm font-medium text-gray-400">Phone number</label>
+                        <input type="tel" id="phonenumber" name="phonenumber" value="{{user.phonenumber}}" required class="bg-gray-700 border border-gray-600 rounded-md p-2 w-full text-white">
+                    </div>
+                    <div>
+                        <label for="dob" class="block text-sm font-medium text-gray-400">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" value="{{ user.dob|date:'Y-m-d' }}" required class="bg-gray-700 border border-gray-600 rounded-md p-2 w-full text-white">
+                    </div>
+                    <div>
+                        <label for="gender" class="block text-sm font-medium text-gray-400">Gender</label>
+                        <select id="gender" name="gender" required class="bg-gray-700 border border-gray-600 rounded-md p-2 w-full text-white">
+                            <option value="Male" {% if user.gender == "Male" %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if user.gender == "Female" %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if user.gender == "Other" %}selected{% endif %}>Other</option>
+                            <option value="Prefer not to say" {% if user.gender == "Prefer not to say" %}selected{% endif %}>Prefer not to say</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="age" class="block text-sm font-medium text-gray-400">Age</label>
+                        <input type="number" id="age" name="age" min="0" max="120" value="{{ user.age }}" required class="bg-gray-700 border border-gray-600 rounded-md p-2 w-full text-white">
+                    </div>
+                    <div class="mt-6 flex justify-center space-x-4">
+                        <button type="submit" class="px-4 py-2 bg-blue-700 text-white rounded-md shadow hover:bg-blue-800 focus:outline-none">Update</button>
+                        <a href="/pprofile/" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow hover:bg-gray-700 focus:outline-none">Cancel</a>
+                    </div>
+                </div>
+            </form>
+
+            <div id="alert-message" class="alert mt-4" style="display: none;">Profile updated successfully!</div>
+            
+
+        </div>
+    </div>
+
+    <script>
+        // Removed event listener to allow normal form submission
+    </script>
+</body>
+</html>

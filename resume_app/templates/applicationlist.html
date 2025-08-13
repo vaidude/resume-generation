@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Applications</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">Job Applications</h1>
+        
+        {% if applications %}
+            <div class="space-y-4">
+                {% for application in applications %}
+                    <div class="p-4 border rounded-md">
+                        <h2 class="text-lg font-semibold">{{ application.job.jobTitle }}</h2>
+                        <p class="text-gray-600">Company: {{ application.job.companyName }}</p>
+                        <p class="text-gray-600">Applicant Name: {{ application.user.name }}</p>
+                        <p class="text-gray-600">Applicant: {{ application.user.email }}</p>
+                        <p class="text-gray-600">Applied: {{ application.applied_date|date:"F d, Y" }}</p>
+                        <p class="text-gray-600">Status: 
+                            <span class="inline-block px-2 py-1 rounded-md text-sm
+                                {% if application.application_status == 'Applied' %}bg-blue-100 text-blue-800{% endif %}
+                                {% if application.application_status == 'Under Review' %}bg-yellow-100 text-yellow-800{% endif %}
+                                {% if application.application_status == 'Shortlisted' %}bg-green-100 text-green-800{% endif %}
+                                {% if application.application_status == 'Rejected' %}bg-red-100 text-red-800{% endif %}
+                                {% if application.application_status == 'Accepted' %}bg-purple-100 text-purple-800{% endif %}">
+                                {{ application.application_status }}
+                            </span>
+                        </p>
+                        {% if application.cover_letter %}
+                            <p class="mt-2 text-gray-700">Cover Letter: {{ application.cover_letter }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600">No applications found.</p>
+        {% endif %}
+        
+        <div class="mt-6 text-center">
+            <a href="{% url 'job_provider' %}" 
+               class="inline-block bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+                Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

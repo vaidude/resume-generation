@@ -1,0 +1,151 @@
+<!-- templates/transactions/list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction List</title>
+    
+    <!-- External CSS Link (Optional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: #2d3e50;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #2d3e50;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .pagination a:hover {
+            background-color: #45a049;
+        }
+
+        .pagination .current {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .pagination .disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Transaction List</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Order ID</th>
+                <th>Payment ID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.user.name }}</td>
+                <td>{{ transaction.order_id }}</td>
+                <td>{{ transaction.payment_id }}</td>
+                <td>${{ transaction.amount }}</td>
+                <td>
+                    {% if transaction.status == "completed" %}
+                    <span style="color: green;">{{ transaction.status }}</span>
+                    {% elif transaction.status == "pending" %}
+                    <span style="color: orange;">{{ transaction.status }}</span>
+                    {% else %}
+                    <span style="color: red;">{{ transaction.status }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ transaction.created_at|date:"M d, Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="first"><i class="fas fa-angle-double-left"></i> First</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="previous"><i class="fas fa-chevron-left"></i> Previous</a>
+            {% else %}
+                <span class="disabled"><i class="fas fa-angle-double-left"></i> First</span>
+                <span class="disabled"><i class="fas fa-chevron-left"></i> Previous</span>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="next">Next <i class="fas fa-chevron-right"></i></a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="last">Last <i class="fas fa-angle-double-right"></i></a>
+            {% else %}
+                <span class="disabled">Next <i class="fas fa-chevron-right"></i></span>
+                <span class="disabled">Last <i class="fas fa-angle-double-right"></i></span>
+            {% endif %}
+        </span>
+    </div>
+
+</body>
+</html>

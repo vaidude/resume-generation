@@ -1,0 +1,39 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Add Placement</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}" type="text/css" />
+</head>
+<body>
+    <div style="max-width: 500px; margin: 20px auto; padding: 20px;">
+        <h2>Add Placement</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label for="user">User</label>
+                <select name="user" style="width: 100%; padding: 8px;" required>
+                    {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="job">Job</label>
+                <select name="job" style="width: 100%; padding: 8px;" required>
+                    {% for job in jobs %}
+                    <option value="{{ job.id }}">{{ job.jobTitle }} - {{ job.companyName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" style="padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer;">Add</button>
+        </form>
+        <a href="/placements/" style="display: inline-block; margin-top: 10px; color: #007bff; text-decoration: none;">Back to Placements</a>
+    </div>
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

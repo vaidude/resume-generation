@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .filters {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mt-5">Job Listings</h1>
+    
+    <!-- Search Box and Filters -->
+    <div class="search-container">
+        <form method="GET" action="{% url 'job_list' %}">
+            <div class="form-row">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="search" placeholder="Search job titles..." value="{{ request.GET.search }}">
+                </div>
+                <div class="col-md-2">
+                    <select name="salary_range" class="form-control">
+                        <option value="">Salary Range</option>
+                        <option value="Below $50k" {% if request.GET.salary_range == 'Below $50k' %}selected{% endif %}>Below $50k</option>
+                        <option value="$50k - $100k" {% if request.GET.salary_range == '$50k - $100k' %}selected{% endif %}>$50k - $100k</option>
+                        <option value="Above $100k" {% if request.GET.salary_range == 'Above $100k' %}selected{% endif %}>Above $100k</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="qualification" class="form-control" placeholder="Qualifications" value="{{ request.GET.qualification }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Job Cards -->
+    <div class="row">
+        {% for job in jobs %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ job.jobTitle }}</h5>
+                    <p class="card-text"><strong>Company:</strong> {{ job.companyName }}</p>
+                    <p class="card-text"><strong>Location:</strong> {{ job.companyAddress }}</p>
+                    <p class="card-text"><strong>Description:</strong> {{ job.jobDescription|slice:":150" }}...</p>
+                    <p class="card-text"><strong>Salary:</strong> {{ job.salaryRange }}</p>
+                    <p class="card-text"><strong>Qualifications:</strong> {{ job.jobQualifications|slice:":100" }}...</p>
+                    <p class="card-text"><strong>Deadline:</strong> {{ job.applicationDeadline }}</p>
+                    <a href="{% url 'apply' job.id %}" class="btn btn-success">Apply</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No jobs available matching your criteria.</p>
+        {% endfor %}
+    </div>
+    <a href="/generate/" class="btn btn-primary w-100">Try virtual Interview</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

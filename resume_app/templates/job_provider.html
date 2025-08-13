@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Recruitment Dashboard</title>
+    <style>
+        /* Design Tokens */
+        :root {
+            /* Colors - Enterprise Theme */
+            --color-brand: #0f172a;
+            --color-brand-light: #1e293b;
+            --color-accent: #3b82f6;
+            --color-accent-light: #60a5fa;
+            --color-success: #059669;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-info: #0284c7;
+
+            /* Neutral Colors */
+            --color-bg-primary: #f8fafc;
+            --color-bg-secondary: #ffffff;
+            --color-text-primary: #0f172a;
+            --color-text-secondary: #475569;
+            --color-text-tertiary: #64748b;
+            --color-border: #e2e8f0;
+
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+            /* Typography */
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-md: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+
+            /* Transitions */
+            --transition-all: all 0.3s ease;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            min-height: 100vh;
+        }
+
+        /* Layout Components */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: var(--color-brand);
+            padding: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+            position: fixed;
+            height: 100vh;
+            width: 280px;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--color-brand-light);
+        }
+
+        .company-logo {
+            color: white;
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .nav-section-title {
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: var(--space-sm) var(--space-md);
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            color: var(--color-text-tertiary);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: var(--transition-all);
+        }
+
+        .nav-link:hover {
+            background-color: var(--color-brand-light);
+            color: white;
+        }
+
+        .nav-link.active {
+            background-color: var(--color-accent);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: var(--space-2xl);
+            margin-left: 280px;
+        }
+
+        /* Header Section */
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .page-title h1 {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+        }
+
+        .page-title p {
+            color: var(--color-text-tertiary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-all);
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-accent-light);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-bg-primary);
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        /* Card Components */
+        .card {
+            background-color: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .metric-card {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .metric-title {
+            color: var(--color-text-tertiary);
+            font-size: var(--font-size-sm);
+        }
+
+        .metric-value {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+        }
+
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: var(--font-size-sm);
+        }
+
+        .trend-positive {
+            color: var(--color-success);
+        }
+
+        .trend-negative {
+            color: var(--color-danger);
+        }
+
+        /* Table Styles */
+        .table-container {
+            background-color: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .table-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+        }
+
+        .responsive-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .responsive-table th {
+            text-align: left;
+            padding: var(--space-md);
+            font-weight: 500;
+            color: var(--color-text-tertiary);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .responsive-table td {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .responsive-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-xs) var(--space-md);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: var(--color-success);
+            color: white;
+        }
+
+        .status-pending {
+            background-color: var(--color-warning);
+            color: white;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: var(--color-bg-primary);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--color-accent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="company-logo">TalentHub</div>
+            </div>
+
+            <nav class="nav-section">
+                <span class="nav-section-title">Main</span>
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="/addjob/" class="nav-link">Job Postings</a>
+                <a href="/applications/" class="nav-link">Applications</a>
+                {% comment %} <a href="#" class="nav-link">Candidates</a> {% endcomment %}
+
+            </nav>
+
+            <nav class="nav-section">
+                <span class="nav-section-title">Recruitment</span>
+                {% comment %} <a href="#" class="nav-link">Interviews</a> {% endcomment %}
+                <a href="/create_exam/" class="nav-link">Add Assessment Tests</a>
+                <a href="/viewexams/" class="nav-link">Assessments</a>
+            </nav>
+
+            <nav class="nav-section">
+                <span class="nav-section-title">Reports</span>
+                <a href="/viewresults/" class="nav-link">Analytics</a>
+                <a href="/add_placement/" class="nav-link">Placement Report    </a>
+                <a href="/logout/" class="nav-link">Sign Out</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <div class="page-title">
+                    <h1>Recruitment Dashboard</h1>
+                    <p>Track your hiring pipeline and recruitment metrics</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary">Export Report</button>
+                    <button class="btn btn-primary">+ Post New Job</button>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <div class="card metric-card">
+                    <span class="metric-title">Active Job Postings</span>
+                    <span class="metric-value">24</span>
+                    <span class="metric-trend trend-positive">↑ 12% from last month</span>
+                </div>
+                <div class="card metric-card">
+                    <span class="metric-title">Total Applications</span>
+                    <span class="metric-value">842</span>
+                    <span class="metric-trend trend-positive">↑ 8% from last month</span>
+                </div>
+                <div class="card metric-card">
+                    <span class="metric-title">Interviews Scheduled</span>
+                    <span class="metric-value">68</span>
+                    <span class="metric-trend trend-positive">↑ 15% from last month</span>
+                </div>
+                <div class="card metric-card">
+                    <span class="metric-title">Time to Hire</span>
+                    <span class="metric-value">21d</span>
+                    <span class="metric-trend trend-negative">↓ 3 days longer</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2 class="table-title">Recent Job Postings</h2>
+                    <button class="btn btn-secondary">View All Jobs</button>
+                </div>
+                <table class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Department</th>
+                            <th>Location</th>
+                            <th>Applications</th>
+                            <th>Status</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Senior Software Engineer</td>
+                            <td>Engineering</td>
+                            <td>New York, NY</td>
+                            <td>126</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 75%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Product Manager</td>
+                            <td>Product</td>
+                            <td>Remote</td>
+                            <td>84</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 60%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>UX Designer</td>
+                            <td>Design</td>
+                            <td>San Francisco, CA</td>
+                            <td>56</td>
+                            <td><span class="status-badge status-pending">Review</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for a Job</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            max-width: 600px;
+        }
+        h2 {
+            text-align: center;
+            color: #343a40;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            color: #495057;
+        }
+        input, textarea, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            padding: 12px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .readonly-input {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Job Application</h2>
+        <form  method="POST">
+            {% csrf_token %} 
+            <label for="user">Full Name:</label>
+            <input type="text" id="user" name="user" class="readonly-input" value="{{ user.name }}" readonly>
+            
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" class="readonly-input" value="{{ user.email }}" readonly>
+            
+            <label for="dob">Date of Birth:</label>
+            <input type="text" id="dob" name="dob" class="readonly-input"  value="{{ user.dob|date:'Y-m-d' }}" readonly>
+            
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone" class="readonly-input" value="{{ user.phonenumber }}" readonly>
+            
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" name="gender" class="readonly-input" value="{{ user.gender }}" readonly>
+            
+            <label for="job">Job Title:</label>
+            <input type="text" id="job" name="job" class="readonly-input" value="{{ job.jobTitle }}" readonly>
+            
+            <label for="company">Company Name:</label>
+            <input type="text" id="company" name="company" class="readonly-input" value="{{ job.companyName }}" readonly>
+            
+            <label for="companyAddress">Company Address:</label>
+            <input type="text" id="companyAddress" name="companyAddress" class="readonly-input" value="{{ job.companyAddress }}" readonly>
+            
+            <label for="jobDescription">Job Description:</label>
+            <textarea id="jobDescription" name="jobDescription" class="readonly-input" rows="3" readonly>{{ job.jobDescription }}</textarea>
+            
+            <label for="jobResponsibilities">Job Responsibilities:</label>
+            <textarea id="jobResponsibilities" name="jobResponsibilities" class="readonly-input" rows="3" readonly>{{ job.jobResponsibilities }}</textarea>
+            
+            <label for="jobQualifications">Job Qualifications:</label>
+            <textarea id="jobQualifications" name="jobQualifications" class="readonly-input" rows="3" readonly>{{ job.jobQualifications }}</textarea>
+            
+            <label for="salaryRange">Salary Range:</label>
+            <input type="text" id="salaryRange" name="salaryRange" class="readonly-input" value="{{ job.salaryRange }}" readonly>
+            
+            <label for="contactEmail">Contact Email:</label>
+            <input type="email" id="contactEmail" name="contactEmail" class="readonly-input" value="{{ job.contactEmail }}" readonly>
+            
+            
+<label for="applicationDeadline">Application Deadline:</label>
+<input type="text" id="applicationDeadline" name="applicationDeadline" class="readonly-input" value="{{ job.applicationDeadline|date:'Y-m-d' }}" readonly>
+            
+            <label for="cover_letter">Cover Letter:</label>
+            <textarea id="cover_letter" name="cover_letter" rows="4" placeholder="Write your cover letter here..."></textarea>
+            
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+</body>
+</html>

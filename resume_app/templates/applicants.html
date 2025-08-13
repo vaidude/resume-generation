@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        td { border: 1px solid #ddd; }
+        .btn { text-decoration: none; padding: 5px 10px; display: inline-block; }
+        .btn-warning { background-color: #f0ad4e; color: #fff; }
+    </style>
+</head>
+<body>
+    <h2>Job Applicants</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="exam_link">Exam Link:</label>
+        <input type="text" name="exam_link" id="exam_link" value="{{ exam_link }}" required>
+        <button type="submit" name="save_link" class="btn btn-warning btn-sm">Save Link</button>
+    </form>
+    <table>
+        <tr>
+            <td class="py-3 px-4"><strong>User</strong></td>
+            <td class="py-3 px-4"><strong>Email</strong></td>
+            <td class="py-3 px-4"><strong>Company</strong></td>
+            <td class="py-3 px-4"><strong>Action</strong></td>
+        </tr>
+        {% for applicant in applicants %}
+        <tr>
+            <td class="py-3 px-4">{{ applicant.user.name }}</td>
+            <td class="py-3 px-4">{{ applicant.user.email }}</td>
+            <td class="py-3 px-4">{{ applicant.job.companyName }}</td>
+
+            <td class="py-3 px-4">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="applicant_id" value="{{ applicant.id }}">
+                    <input type="hidden" name="exam_link" value="{{ exam_link }}">
+                    <button type="submit" class="btn btn-warning btn-sm">Send link</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" class="py-3 px-4">No applicants found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

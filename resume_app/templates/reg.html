@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #00264d, #004080);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
+      color: #fff;
+    }
+
+    /* Form Container */
+    .container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Logo */
+    .logo {
+      max-width: 80px;
+      margin-bottom: 15px;
+    }
+
+    /* Heading */
+    .container h1 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #00264d;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* Forms */
+    .form {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .form.active {
+      display: block;
+    }
+
+    /* Input Fields */
+    .form input[type="text"],
+    .form input[type="email"],
+    .form input[type="password"],
+    .form input[type="number"],
+    .form select,
+    .form input[type="date"],
+    .form input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .form input:focus,
+    .form select:focus,
+    .form input[type="date"]:focus {
+      border-color: #00264d;
+      box-shadow: 0 0 8px rgba(0, 38, 77, 0.3);
+    }
+
+    /* Read-only Age Field */
+    .form input[readonly] {
+      background-color: #f9f9f9;
+      color: #333;
+      cursor: not-allowed;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    /* Submit Button */
+    .form button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #00264d, #004080);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 0.8px;
+    }
+
+    .form button:hover {
+      background: linear-gradient(135deg, #004080, #00264d);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 38, 77, 0.3);
+    }
+
+    /* Links */
+    .form p {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .form p a {
+      color: #00264d;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .form p a:hover {
+      color: #004080;
+      text-decoration: underline;
+    }
+
+    /* Keyframes for Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Keyframes for Background Gradient Animation */
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Replace this with your Registration Logo -->
+    <img src="https://via.placeholder.com/80?text=Register+Logo" alt="Registration Logo" class="logo">
+    
+    <div id="register" class="form active">
+      <h1>Register</h1>
+      <form method='post'>
+        {% csrf_token %}
+        <input type="text" placeholder="Full Name" name="name" required>
+        <input type="email" placeholder="Email Address" name="email" required>
+        <input type="password" placeholder="Password" name="password" required>
+
+        <input type="date" id="dob" placeholder="Date of Birth" name="dob" required>
+
+        <input type="text" id="age" placeholder="Age" name="age" required>
+
+        <input type="tel" id="phone" placeholder="Phone Number" name="phonenumber" required pattern="^\d{10}$" title="Phone number must be 10 digits">
+
+        <select name="gender" required>
+          <option value="" disabled selected>Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        
+        <button type="submit">Sign Up</button>
+      </form>
+      <p>Already have an account? </p>
+    </div>
+  </div>
+
+</body>
+</html>
